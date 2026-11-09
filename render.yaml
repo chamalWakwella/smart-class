@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: smart-class
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_TIMEZONE
+        value: Asia/Colombo
+      - key: CLASS_LATE_AFTER
+        value: "16:15"
+      - key: CURRENCY
+        value: Rs.
+      - key: DEFAULT_MONTHLY_FEE
+        value: "1000"
+      - key: CLASS_NAME
+        value: Smart Class Mathematics
+      - key: TEACHER_NAME
+        value: Chamal Wakwella
+      - key: TEACHER_PHONE
+        value: "0764629455"
+      - key: MONGODB_URI
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false

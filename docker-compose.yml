@@ -1,0 +1,11 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: smart-class-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - smartclass_mongo:/data/db
+
+volumes:
+  smartclass_mongo:

@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-chalk font-sans text-ink antialiased;
+    background-image:
+      linear-gradient(to right, rgba(20, 34, 28, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 34, 28, 0.035) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply text-ink;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-board text-white hover:bg-ink;
+  }
+
+  .btn-ghost {
+    @apply btn border border-mist bg-white text-ink hover:bg-chalk;
+  }
+
+  .btn-danger {
+    @apply btn border border-clay/30 bg-white text-clay hover:bg-red-50;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-mist bg-white px-3 py-2 text-sm outline-none ring-gold/30 focus:border-gold focus:ring-2;
+  }
+
+  .label {
+    @apply mb-1 block text-xs font-medium tracking-wide text-ink/70;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-mist bg-white shadow-card;
+  }
+}
+
+.smart-card {
+  width: 86mm;
+  height: 54mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d5ddd8;
+  border-radius: 4mm;
+  background: #f7f4ee;
+  color: #14221c;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.smart-card-band {
+  display: flex;
+  height: 14mm;
+  align-items: center;
+  gap: 2.5mm;
+  padding: 0 3.5mm;
+  background: #1b3027;
+  color: white;
+  border-bottom: 0.7mm solid #c4923a;
+}
+
+.smart-card-body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3mm;
+  padding: 2.5mm 3.5mm 2.5mm 4mm;
+}
+
+.smart-card-name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 5mm;
+  line-height: 1.05;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.smart-card-id {
+  margin-top: 1.2mm;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 3.1mm;
+  letter-spacing: 0.04em;
+  color: rgba(20, 34, 28, 0.72);
+}
+
+#qr-reader {
+  overflow: hidden;
+  min-height: 280px;
+  border-radius: 1rem;
+  background: #14221c;
+}
+
+#qr-reader video {
+  width: 100% !important;
+  border-radius: 1rem;
+}
+
+.scan-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  border-radius: 1.5rem;
+  border: 2px solid transparent;
+  padding: 1.5rem;
+  animation: rise 280ms ease;
+}
+
+.scan-card-paid {
+  border-color: #1f7a4d;
+  background: #e5f6ec;
+  box-shadow: 0 0 0 6px rgba(31, 122, 77, 0.14);
+}
+
+.scan-card-due {
+  border-color: #a33b32;
+  background: #fdeceb;
+  box-shadow: 0 0 0 6px rgba(163, 59, 50, 0.14);
+}
+
+.scan-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: flash 560ms ease;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes flash {
+  from {
+    background: rgba(255, 255, 255, 0.72);
+  }
+  to {
+    background: transparent;
+  }
+}
+
+@media print {
+  @page {
+    margin: 10mm;
+  }
+
+  body:has(.print-host) > *:not(.print-host) {
+    display: none !important;
+  }
+
+  .print-host .no-print {
+    display: none !important;
+  }
+
+  .print-host .fixed {
+    position: static !important;
+    overflow: visible !important;
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  .print-host .panel {
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-sheet {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8mm !important;
+  }
+}
