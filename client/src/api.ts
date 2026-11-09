@@ -63,7 +63,7 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     payload = null;
   }
 
-  if (response.status === 401 && !path.startsWith('/api/auth/')) {
+  if (response.status === 401 && !path.startsWith('/api/session/')) {
     setToken(null);
     onUnauthorized();
   }

@@ -94,14 +94,14 @@ Guardian phone numbers are personal data. Production refuses to start until `APP
 
 All JSON responses use `{ "success": true, "data": ... }` or `{ "success": false, "message": "..." }`.
 
-Public routes: `GET /api/health`, `GET /api/config`, `POST /api/auth/login`, `POST /api/auth/student`.
+Public routes: `GET /api/health`, `GET /api/config`, `POST /api/session/login`, `POST /api/session/student`.
 
-Teacher routes need `Authorization: Bearer <token>` from `POST /api/auth/login` once `APP_PASSWORD` is set. A student token is rejected there. `GET /api/me` always needs the token from `POST /api/auth/student`.
+Teacher routes need `Authorization: Bearer <token>` from `POST /api/session/login` once `APP_PASSWORD` is set. A student token is rejected there. `GET /api/me` always needs the token from `POST /api/session/student`.
 
 | Method | Path | Purpose |
 | --- | --- | --- |
-| POST | `/api/auth/login` | Teacher password. Returns an admin token |
-| POST | `/api/auth/student` | Body: `studentId`, `guardianPhone`. Returns a student token |
+| POST | `/api/session/login` | Teacher password. Returns an admin token |
+| POST | `/api/session/student` | Body: `studentId`, `guardianPhone`. Returns a student token |
 | GET | `/api/me` | The signed-in student’s fee, attendance, marks, and card |
 | GET | `/api/students?grade=&q=` | List students |
 | POST | `/api/students` | Create. Body: `name`, `grade`, `guardianPhone` |

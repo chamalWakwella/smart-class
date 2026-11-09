@@ -30,7 +30,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const savedRole = getRole();
     if (savedRole === 'admin' && next.authRequired && getToken()) {
       try {
-        await api('/api/auth/session');
+        await api('/api/session');
       } catch {
         setSession(null, null);
         setRole(null);
@@ -66,7 +66,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginAdmin = async (password: string) => {
-    const data = await api<{ token: string; role: SessionRole }>('/api/auth/login', {
+    const data = await api<{ token: string; role: SessionRole }>('/api/session/login', {
       method: 'POST',
       body: JSON.stringify({ password }),
     });
@@ -75,7 +75,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const loginStudent = async (studentId: string, guardianPhone: string) => {
-    const data = await api<{ token: string }>('/api/auth/student', {
+    const data = await api<{ token: string }>('/api/session/student', {
       method: 'POST',
       body: JSON.stringify({ studentId, guardianPhone }),
     });

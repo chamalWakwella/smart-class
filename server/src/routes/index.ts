@@ -12,12 +12,12 @@ const router = Router();
 
 router.get('/health', health);
 router.get('/config', getConfig);
-router.post('/auth/login', login);
-router.post('/auth/student', studentLogin);
+router.post('/session/login', login);
+router.post('/session/student', studentLogin);
 router.get('/me', requireStudent, myRecord);
 
 router.use(requireAdmin);
-router.get('/auth/session', session);
+router.get('/session', session);
 router.use('/students', students);
 router.use('/attendance', attendance);
 router.use('/fees', fees);
