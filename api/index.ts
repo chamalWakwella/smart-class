@@ -6,6 +6,20 @@ const app = createApp();
 
 export const maxDuration = 15;
 
+function headerValue(req: IncomingMessage, name: string): string {
+  const value = req.headers[name];
+  return Array.isArray(value) ? value[0] || '' : value || '';
+}
+
+function incomingPath(req: IncomingMessage): string {
+  const candidates = ['x-forwarded-uri', 'x-original-url', 'x-invoke-path', 'x-vercel-forwarded-path'];
+  for (const name of candidates) {
+    const value = headerValue(req, name);
+    if (value.startsWith('/api/')) return value;
+  }
+  return req.url || '/';
+}
+
 function withApiPrefix(url: string): string {
   const queryAt = url.indexOf('?');
   const path = queryAt === -1 ? url : url.slice(0, queryAt);
@@ -29,6 +43,6 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  req.url = withApiPrefix(req.url || '/');
+  req.url = withApiPrefix(incomingPath(req));
   app(req, res);
 }
