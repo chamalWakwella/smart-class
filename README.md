@@ -2,7 +2,7 @@
 
 Register for a Grade 9–11 mathematics tuition: QR attendance, monthly fees, exam marks, and printable student cards.
 
-The dashboard is a React app in `client`. The API is Express and MongoDB in `server`. In production one Node process serves both.
+The dashboard is a React app in `client`. The API is Express and MongoDB in `server`. Production runs on Vercel: the dashboard is static, and the API is a function on the same address. `npm start` still serves both from one Node process.
 
 ## Layout
 
@@ -128,25 +128,20 @@ A card encodes `SMARTCLASS:MATH-9-001`. The scanner also accepts the bare ID.
 curl.exe -X POST http://localhost:5000/api/attendance/scan -H "Content-Type: application/json" -d "{\"qrData\":\"SMARTCLASS:MATH-9-001\"}"
 ```
 
-## Deploy
+## Deploy on Vercel
 
-### One service (Render or Railway)
+`vercel.json` builds the dashboard and serves the API from `api/[...path].ts` on the same site. Leave `VITE_API_URL` empty.
 
-This is the path `render.yaml` and `railway.toml` use.
+1. Create a MongoDB Atlas database and allow `0.0.0.0/0`, because Vercel has no fixed IP.
+2. From this folder, run `npx vercel login` and then `npx vercel --prod`.
+3. In the Vercel project settings, set `MONGODB_URI` to the Atlas string and `APP_PASSWORD` to the teacher password. Production will not open the register until both are set.
+4. Optional class settings: `APP_TIMEZONE`, `CLASS_LATE_AFTER`, `CURRENCY`, `DEFAULT_MONTHLY_FEE`, `CLASS_NAME`, `TEACHER_NAME`, `TEACHER_PHONE`.
 
-1. Create a MongoDB Atlas database and allow the host’s IP (or `0.0.0.0/0` if the host has no fixed IP).
-2. Set `MONGODB_URI`, `APP_PASSWORD`, `NODE_ENV=production`, and `CLIENT_ORIGIN` to the public site URL.
-3. Build command: `npm install && npm run build`
-4. Start command: `npm start`
-5. Health check: `/api/health`
+Addresses ending in `.vercel.app` are allowed to call the API. Set `CLIENT_ORIGIN` as well if you use a custom domain.
 
-The server serves `client/dist` and the `/api` routes on the same origin. Leave `VITE_API_URL` empty.
+Health check: `/api/health`.
 
-### Split UI and API
-
-- Host the API on Render or Railway.
-- Host `client` on Vercel. Set the Vercel project root to `client` and `VITE_API_URL` to the API origin, with no trailing slash.
-- Set the API `CLIENT_ORIGIN` to the Vercel URL.
+`render.yaml` and `railway.toml` remain if you later host the same build as one Node service with `npm start`.
 
 ## Scripts
 

@@ -23,6 +23,12 @@ function originAllowed(origin: string): boolean {
     .filter(Boolean);
   if (allowed.includes(origin)) return true;
   if (env.nodeEnv !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) return true;
+  try {
+    const host = new URL(origin).hostname;
+    if (host === 'vercel.app' || host.endsWith('.vercel.app')) return true;
+  } catch {
+    return false;
+  }
   return false;
 }
 
@@ -58,7 +64,7 @@ export function createApp() {
 
   app.use('/api', apiRouter);
 
-  if (env.nodeEnv === 'production') {
+  if (env.nodeEnv === 'production' && !process.env.VERCEL) {
     const dist = clientDistPath();
     if (dist) {
       app.use(express.static(dist, { index: false, maxAge: '1d' }));

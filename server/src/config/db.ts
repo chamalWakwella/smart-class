@@ -1,8 +1,19 @@
 import mongoose from 'mongoose';
 import { env } from './env';
 
-export async function connectDb(): Promise<void> {
-  mongoose.set('strictQuery', true);
-  await mongoose.connect(env.mongoUri);
-  console.log('Connected to MongoDB');
+mongoose.set('strictQuery', true);
+
+let connection: Promise<typeof mongoose> | null = null;
+
+export function connectDb(): Promise<typeof mongoose> {
+  if (!process.env.MONGODB_URI && (process.env.VERCEL || env.nodeEnv === 'production')) {
+    return Promise.reject(new Error('Set MONGODB_URI before starting in production.'));
+  }
+  if (!connection) {
+    connection = mongoose.connect(env.mongoUri).catch((error: unknown) => {
+      connection = null;
+      throw error;
+    });
+  }
+  return connection;
 }
