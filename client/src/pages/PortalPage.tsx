@@ -55,7 +55,7 @@ export function PortalPage() {
           <GraduationCap className="h-6 w-6 text-gold" />
           <h1 className="mt-4 font-display text-3xl">Student</h1>
           <p className="mt-2 text-sm text-ink/70">
-            See this month’s fee, attendance, marks, and your smart card. Sign in with your student ID and guardian phone.
+            See this month’s fee, attendance, and marks. Sign in with your student ID and guardian phone.
           </p>
           <span className="btn-primary mt-5">{role === 'student' ? 'Open my dashboard' : 'Sign in as student'}</span>
         </button>

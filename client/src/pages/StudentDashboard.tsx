@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { api } from '../api';
-import { PrintDialog, SmartCard } from '../components/SmartCard';
 import { StatusPill } from '../components/StatusPill';
 import { Logo } from '../components/Logo';
 import { useApp } from '../context/AppContext';
@@ -48,7 +47,6 @@ export function StudentDashboard() {
   const navigate = useNavigate();
   const [record, setRecord] = useState<MyRecord | null>(null);
   const [error, setError] = useState('');
-  const [printing, setPrinting] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -193,19 +191,6 @@ export function StudentDashboard() {
         </section>
       </div>
 
-      <section className="panel mt-4 p-5">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="font-display text-2xl">Smart card</h2>
-            <p className="text-sm text-ink/60">Bring this card to class. The teacher scans it for attendance.</p>
-          </div>
-          <button type="button" className="btn-ghost" onClick={() => setPrinting(true)}>
-            Print card
-          </button>
-        </div>
-        <SmartCard student={record.student} />
-      </section>
-
       {record.fees.length > 0 ? (
         <section className="panel mt-4 overflow-hidden">
           <div className="border-b border-mist px-5 py-4">
@@ -222,8 +207,6 @@ export function StudentDashboard() {
           </ul>
         </section>
       ) : null}
-
-      <PrintDialog students={printing ? [record.student] : null} onClose={() => setPrinting(false)} />
     </div>
   );
 }

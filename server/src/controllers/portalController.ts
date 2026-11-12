@@ -11,7 +11,7 @@ export const myRecord = asyncHandler(async (req, res) => {
   const studentId = req.studentId;
   if (!studentId) throw new HttpError(401, 'Sign in with your student ID to continue.');
 
-  const student = await Student.findOne({ studentId });
+  const student = await Student.findOne({ studentId }).select('-qrCodeData');
   if (!student) throw new HttpError(404, 'Student not found.');
 
   const month = currentMonth();
